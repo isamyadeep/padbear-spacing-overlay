@@ -62,13 +62,6 @@ working in that repo. Reload your dev server — the panel appears top-right.
   project root and the tag still says `/padbear-engine.js` — so serve the
   project root as the web root. For `file://` use, change the tag to
   `src="./padbear-engine.js"`.
-- **Why not `padbear.js`?** v0.2.0 renamed the engine file. On Windows,
-  cmd.exe resolves commands from the current directory first, so a project
-  file named `padbear-engine.js` would shadow the `padbear` CLI command — running
-  `npx padbear init` in-place executed the engine file through the `.js` file
-  association instead of the CLI. `padbear-engine.js` can never collide.
-  Installing over a v0.1.x project migrates the old script tag and deletes
-  the old engine automatically.
 - **Next.js / no `index.html`:** add `<Script src="/padbear-engine.js" strategy="beforeInteractive" />` in `app/layout.tsx`.
 - **Tokens:** `init` does not generate the dictionary. If the project already
   defines spacing as CSS custom properties (`--space-*`, `--s-*`…) or a
