@@ -35,7 +35,7 @@ abstraction — Tailwind class, CSS variable, Sass variable, Dart constant —
 | `padbear-npm/padbear.tokens.json` | **2** | Example populated dictionary: CSS variables, Tailwind scale, structured tokens with naming conventions & boundaries. |
 | `padbear-npm/skill.md` | **3** | The LLM agent system prompt: ID grammar, ID tracing algorithm, smart token reconciliation loop, collision-avoidance rules, **framework install/uninstall (§6.4)**, output contract, worked examples. |
 | `docs/framework-matrix.md` | **4** | Extraction & mutation strategies + implementation code for Tailwind+React, Vue, SCSS/CSS Modules, and Flutter/Dart. |
-| `padbear-npm/padbear-engine.js` | **1** | Standalone engine build (auto-extracted — `node tools/extract-engine.mjs`) for injecting into any page. v0.2.0 renamed it from `padbear.js` so it can never shadow the `padbear` CLI command on Windows. See [`docs/try-on-another-project.md`](docs/try-on-another-project.md). |
+| `padbear-npm/padbear-engine.js` | **1** | Standalone engine build (auto-extracted — `node tools/extract-engine.mjs`) for injecting into any page. See [`docs/try-on-another-project.md`](docs/try-on-another-project.md). |
 
 ## Quick start
 
@@ -102,7 +102,7 @@ Full per-framework recipes (and the exact line to remove again) live in
 npx padbear remove        # clean uninstall — removes exactly what init added
 ```
 
-To **update** an installed overlay, re-run init with the latest version:
+To **update** an installed overlay:
 
 ```bash
 npx padbear update        # re-runs init from padbear@latest, same options apply

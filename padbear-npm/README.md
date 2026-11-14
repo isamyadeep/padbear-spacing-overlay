@@ -30,7 +30,7 @@ abstraction — Tailwind class, CSS variable, Sass variable, Dart constant —
 
 | File | Module | What it is |
 |---|---|---|
-| `padbear-engine.js` | **1** | Standalone overlay engine build (auto-extracted from `index.html`) — inject with a `<script>` tag; this is what `init` installs (v0.2.0; was `padbear.js`). |
+| `padbear-engine.js` | **1** | Standalone overlay engine build (auto-extracted from `index.html`) — inject with a `<script>` tag; this is what `init` installs. |
 | `bin/padbear.mjs` | — | Installer CLI: `npx padbear init` / `npx padbear update` / `npx padbear remove`. |
 | `schemas/padbear-token-dictionary.schema.json` | **2** | Strict JSON Schema (draft 2020-12) for the token dictionary. |
 | `padbear.tokens.json` | **2** | Example populated dictionary: CSS variables, Tailwind scale, structured tokens with naming conventions & boundaries. Its `$schema` path is relative to this package root. |
