@@ -1,0 +1,69 @@
+{
+  "$schema": "./schemas/padbear-token-dictionary.schema.json",
+  "project": "acme-webapp",
+  "version": "1.2.0",
+
+  "cssVariables": {
+    "--space-1": "4px",
+    "--space-2": "8px",
+    "--space-3": "12px",
+    "--space-4": "16px",
+    "--space-5": "24px",
+    "--space-6": "32px",
+    "--space-7": "48px",
+    "--space-8": "64px"
+  },
+
+  "frameworks": {
+    "tailwind": {
+      "spacingScale": {
+        "0": "0px",
+        "0.5": "2px",
+        "1": "4px",
+        "1.5": "6px",
+        "2": "8px",
+        "2.5": "10px",
+        "3": "12px",
+        "4": "16px",
+        "5": "20px",
+        "6": "24px",
+        "8": "32px",
+        "10": "40px",
+        "12": "48px",
+        "16": "64px"
+      },
+      "spacingPrefixes": [
+        "p", "px", "py", "pt", "pr", "pb", "pl",
+        "m", "mx", "my", "mt", "mr", "mb", "ml",
+        "gap", "gap-x", "gap-y",
+        "space-x", "space-y"
+      ]
+    }
+  },
+
+  "tokens": {
+    "spacing": {
+      "namingConvention": {
+        "pattern": "space.<step>",
+        "step": 100,
+        "notes": "Steps are multiples of 100 and never reused for a different value. Do not invent intermediate steps (e.g. space.450) without a design review; prefer the nearest existing step."
+      },
+      "boundaries": {
+        "minPx": 2,
+        "maxPx": 96
+      },
+      "scale": [
+        { "name": "space.100",  "value": "4px",  "usage": "hairline gaps, icon inset, chip padding" },
+        { "name": "space.200",  "value": "8px",  "usage": "tight intra-component spacing, toolbar button gaps" },
+        { "name": "space.300",  "value": "12px", "usage": "dense list gutters, form field gaps" },
+        { "name": "space.400",  "value": "16px", "usage": "default card padding, grid gap, section rhythm" },
+        { "name": "space.600",  "value": "24px", "usage": "section gutters, modal padding" },
+        { "name": "space.800",  "value": "32px", "usage": "page-level horizontal padding" },
+        { "name": "space.1200", "value": "48px", "usage": "hero padding, banner insets" },
+        { "name": "space.1600", "value": "64px", "usage": "hero outer margin, feature band spacing" }
+      ]
+    }
+  },
+
+  "notes": "Never write raw px strings into components. Use var(--space-N) in CSS/SCSS and Tailwind utilities in JSX. If a requested value has no exact token, propose the nearest scale step to the user before creating a new token. New tokens require: (1) an entry here, (2) a matching CSS variable in styles/tokens.css, (3) a changelog line."
+}

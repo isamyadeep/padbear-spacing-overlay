@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://padbear.dev/schemas/padbear-token-dictionary.schema.json",
+  "title": "Padbear Project Token Dictionary",
+  "description": "Strict schema for the dictionary an AI agent consults when reconciling spacing values (px read from Padbear overlays) back to named design tokens. Covers CSS custom properties, utility-class frameworks (Tailwind), and structured design tokens with naming conventions and scale boundaries.",
+
+  "type": "object",
+  "required": ["$schema", "project", "cssVariables", "frameworks", "tokens"],
+  "additionalProperties": false,
+
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "./schemas/padbear-token-dictionary.schema.json",
+      "description": "Pins the file to this schema so agents can validate before trusting it."
+    },
+    "project": {
+      "type": "string",
+      "description": "Machine name of the project this dictionary describes."
+    },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+
+    "cssVariables": {
+      "type": "object",
+      "description": "Map of CSS custom properties (design-system spacing vars) to their computed values. Keys must be valid custom property names.",
+      "propertyNames": { "pattern": "^--[a-z][a-z0-9]*(-[a-z0-9]+)*$" },
+      "additionalProperties": { "$ref": "#/$defs/cssLength" },
+      "minProperties": 1
+    },
+
+    "frameworks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tailwind"],
+      "properties": {
+        "tailwind": { "$ref": "#/$defs/tailwindConfig" }
+      }
+    },
+
+    "tokens": {
+      "type": "object",
+      "description": "Structured design tokens. Spacing is required; other scales (radius, color…) may be added but are ignored by Padbear spacing reconciliation.",
+      "additionalProperties": false,
+      "required": ["spacing"],
+      "properties": {
+        "spacing": { "$ref": "#/$defs/structuredSpacing" }
+      }
+    },
+
+    "notes": {
+      "type": "string",
+      "description": "Free-text project conventions the agent must read before mutating code (e.g. 'never inline px; always use var()')."
+    }
+  },
+
+  "$defs": {
+    "cssLength": {
+      "description": "A CSS length the resolver can compare against measured px values. Only px and rem are allowed — em/%/ch are context-dependent, so the agent could never do exact numeric reconciliation with them.",
+      "type": "string",
+      "pattern": "^(-?\\d+(\\.\\d+)?)(px|rem)$"
+    },
+
+    "tailwindConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spacingScale", "spacingPrefixes"],
+      "properties": {
+        "spacingScale": {
+          "type": "object",
+          "description": "Tailwind spacing keys to resolved lengths, e.g. {\"4\": \"16px\"}. A utility is prefix + key: 'p' + '-4' → p-4 → 16px.",
+          "propertyNames": { "pattern": "^(\\d+(\\.\\d+)?|-\\d+(\\.\\d+)?)$" },
+          "additionalProperties": { "$ref": "#/$defs/cssLength" },
+          "minProperties": 1
+        },
+        "spacingPrefixes": {
+          "type": "array",
+          "description": "Spacing-affecting utility prefixes used by this project. The agent joins prefix+key to emit a legal class (p, px, py, pt, m, mt, gap, gap-x, gap-y, …).",
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "importantSuffix": {
+          "type": "string",
+          "description": "Suffix used for important modifiers in this project, e.g. '!' (Tailwind v4) or '!' prefix (v3)."
+        }
+      }
+    },
+
+    "structuredSpacing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["namingConvention", "boundaries", "scale"],
+      "properties": {
+        "namingConvention": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pattern"],
+          "properties": {
+            "pattern": {
+              "type": "string",
+              "description": "Required token name pattern, e.g. 'space.<step>' where step is a multiple of 100."
+            },
+            "step": { "type": "integer", "minimum": 1 },
+            "notes": { "type": "string" }
+          }
+        },
+        "boundaries": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["minPx", "maxPx"],
+          "description": "Hard scale limits. A requested value outside [minPx, maxPx] must be rejected or escalated, never silently added.",
+          "properties": {
+            "minPx": { "type": "number", "exclusiveMinimum": 0 },
+            "maxPx": { "type": "number", "exclusiveMinimum": 0 }
+          }
+        },
+        "scale": {
+          "type": "array",
+          "description": "Ordered, exhaustive spacing scale. Must be sorted ascending by value.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "value", "usage"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Canonical token identifier used in code, e.g. 'space.400'."
+              },
+              "value": { "$ref": "#/$defs/cssLength" },
+              "usage": {
+                "type": "string",
+                "description": "One-line intent ('default card padding') so the agent can pick semantically, not just numerically."
+              },
+              "ref": {
+                "type": "string",
+                "description": "Optional literal reference to write into source when this token is selected (a CSS var, a Sass variable, a Swift/Dart constant…). Defaults to name."
+              },
+              "aliases": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Legacy or alternate names that resolve to this token."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

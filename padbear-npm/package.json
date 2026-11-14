@@ -1,0 +1,46 @@
+{
+  "name": "padbear",
+  "version": "0.2.0",
+  "description": "AI-assisted semantic spacing overlay inspector — paints labeled overlays over every padding, margin, gap, and corner-radius region on a page, and hands region IDs to an AI agent for token-aware source edits.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isamyadeep/padbear-spacing-overlay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/isamyadeep/padbear-spacing-overlay/issues"
+  },
+  "homepage": "https://github.com/isamyadeep/padbear-spacing-overlay#readme",
+  "bin": {
+    "padbear": "bin/padbear.mjs"
+  },
+  "files": [
+    "bin/",
+    "padbear-engine.js",
+    "padbear.tokens.json",
+    "schemas/",
+    "skill.md"
+  ],
+  "scripts": {
+    "build": "node ../tools/extract-engine.mjs",
+    "prepublishOnly": "node ../tools/extract-engine.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "css",
+    "spacing",
+    "layout",
+    "overlay",
+    "inspector",
+    "devtools",
+    "design-tokens",
+    "tailwind",
+    "padding",
+    "margin",
+    "gap",
+    "ai"
+  ]
+}

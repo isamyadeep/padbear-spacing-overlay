@@ -1,0 +1,21 @@
+# Whitelist approach: ignore everything at the root, then allow only the
+# files that belong to the padbear npm package and its source of truth.
+/*
+!/.gitignore
+!/AGENTS.md
+!/README.md
+!/index.html
+!/tools/
+!/docs/
+!/padbear-npm/
+
+# internal session notes — dev log, not product documentation
+docs/SESSION-HANDOFF.md
+
+# always out, even if reintroduced later
+node_modules/
+*.log
+*.tgz
+.DS_Store
+Thumbs.db
+.zcode/
